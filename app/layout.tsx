@@ -6,6 +6,10 @@ import { LenisProvider } from "@/components/lenis-provider"
 import ClickSpark from "@/components/click-spark"
 import "./globals.css"
 
+const appUrl =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
+
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -19,6 +23,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl),
   title: "Toddler Tape | The Tape Toddlers Can Eat",
   description: "A satisfying sensory strip designed to tear, taste, dissolve quickly, and keep tiny hands busy. Starter packs coming soon.",
   keywords: ["toddler tape", "sensory play", "toddler activity", "dissolvable tape", "fine motor skills"],
@@ -27,6 +32,22 @@ export const metadata: Metadata = {
     title: "Toddler Tape | The Tape Toddlers Can Eat",
     description: "A satisfying sensory strip designed to tear, taste, dissolve quickly, and keep tiny hands busy.",
     type: "website",
+    url: appUrl,
+    siteName: "Toddler Tape",
+    images: [
+      {
+        url: "/brand/og-toddlertape.png",
+        width: 1200,
+        height: 630,
+        alt: "ToddlerTape - The tape toddlers can eat.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Toddler Tape | The Tape Toddlers Can Eat",
+    description: "A satisfying sensory strip designed to tear, taste, dissolve quickly, and keep tiny hands busy.",
+    images: ["/brand/og-toddlertape.png"],
   },
 }
 
