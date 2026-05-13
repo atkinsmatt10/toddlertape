@@ -105,7 +105,7 @@ export function ReviewsSection() {
   }
 
   return (
-    <section id="reviews" ref={ref} className="py-16 sm:py-24 bg-[#FFFBF5] relative overflow-hidden" aria-labelledby="reviews-heading">
+    <section id="reviews" ref={ref} className="py-16 sm:py-24 bg-[#FFFBF5] relative overflow-hidden scroll-mt-24" aria-labelledby="reviews-heading">
       {/* Decorative strips */}
       <motion.div
         className="absolute top-12 right-8 sm:right-10 w-16 sm:w-20 h-2.5 sm:h-3 bg-[#EDD97A]/40 rounded-sm rotate-5 hidden sm:block"

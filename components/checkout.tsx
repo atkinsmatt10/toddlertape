@@ -1,21 +1,29 @@
 'use client'
 
-import { useCallback, useState, useMemo } from 'react'
+import { useCallback, useState } from 'react'
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ShoppingBag } from 'lucide-react'
+import { AlertCircle, CheckCircle2, ShoppingBag, X } from 'lucide-react'
 
 import { startCheckoutSession } from '@/app/actions/stripe'
 import { getProductById, formatPrice } from '@/lib/products'
 
+const STRIPE_PUBLISHABLE_KEY_ERROR =
+  'Stripe checkout is not configured. Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to .env.local, then restart the dev server.'
+
 const getStripePromise = () => {
   const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   if (!key) {
-    console.error('[v0] Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+    console.error('[checkout] Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+    return null
+  }
+
+  if (!key.startsWith('pk_')) {
+    console.error('[checkout] NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY must be a Stripe publishable key.')
     return null
   }
   return loadStripe(key)
@@ -30,13 +38,30 @@ interface CheckoutModalProps {
 export function CheckoutModal({ productId, isOpen, onClose }: CheckoutModalProps) {
   const product = getProductById(productId)
   const [stripePromise] = useState(() => getStripePromise())
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [checkoutComplete, setCheckoutComplete] = useState(false)
   
-  const fetchClientSecret = useCallback(
-    () => startCheckoutSession(productId),
-    [productId]
-  )
+  const fetchClientSecret = useCallback(async () => {
+    setCheckoutError(null)
 
-  if (!product || !stripePromise) return null
+    try {
+      return await startCheckoutSession(productId)
+    } catch (error) {
+      console.error('[checkout] Failed to create Stripe Checkout Session', error)
+      setCheckoutError(
+        error instanceof Error && error.message
+          ? error.message
+          : 'Checkout is temporarily unavailable. Please try again.',
+      )
+      throw error
+    }
+  }, [productId])
+
+  if (!product) return null
+
+  const configurationError = stripePromise
+    ? null
+    : STRIPE_PUBLISHABLE_KEY_ERROR
 
   return (
     <AnimatePresence mode="sync">
@@ -88,12 +113,42 @@ export function CheckoutModal({ productId, isOpen, onClose }: CheckoutModalProps
 
             {/* Checkout */}
             <div className="p-6 max-h-[70vh] overflow-y-auto">
-              <EmbeddedCheckoutProvider
-                stripe={stripePromise}
-                options={{ fetchClientSecret }}
-              >
-                <EmbeddedCheckout />
-              </EmbeddedCheckoutProvider>
+              {checkoutComplete ? (
+                <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-[#1A1A1A]/10 bg-[#FFFBF5] px-6 py-12 text-center">
+                  <CheckCircle2 className="h-12 w-12 text-[#4ECDC4]" />
+                  <div>
+                    <h4 className="text-xl font-black text-[#1A1A1A]">Order received</h4>
+                    <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#1A1A1A]/65">
+                      Your payment was completed. A receipt will be sent by Stripe.
+                    </p>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="rounded-full bg-[#1A1A1A] px-5 py-2.5 text-sm font-bold text-[#FFFBF5] transition-colors hover:bg-[#E8735A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8735A] focus-visible:ring-offset-2"
+                  >
+                    Keep Shopping
+                  </button>
+                </div>
+              ) : configurationError || checkoutError ? (
+                <div
+                  role="alert"
+                  className="flex items-start gap-3 rounded-2xl border border-[#E8735A]/30 bg-[#E8735A]/10 p-4 text-sm leading-relaxed text-[#1A1A1A]"
+                >
+                  <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#E8735A]" />
+                  <p>{configurationError || checkoutError}</p>
+                </div>
+              ) : (
+                <EmbeddedCheckoutProvider
+                  key={productId}
+                  stripe={stripePromise}
+                  options={{
+                    fetchClientSecret,
+                    onComplete: () => setCheckoutComplete(true),
+                  }}
+                >
+                  <EmbeddedCheckout />
+                </EmbeddedCheckoutProvider>
+              )}
             </div>
           </motion.div>
         </motion.div>

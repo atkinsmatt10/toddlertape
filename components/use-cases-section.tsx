@@ -21,8 +21,8 @@ const useCases = [
     ),
   },
   {
-    title: "Travel Days",
-    description: "Mess-free entertainment for car seats, planes, and waiting rooms.",
+    title: "Plane Tray Play",
+    description: "Stick a strip to the tray table for peel, tear, taste, repeat at 30,000 feet.",
     color: "bg-[#5BBFB5]",
     textColor: "text-white",
     svg: (
@@ -36,8 +36,8 @@ const useCases = [
     ),
   },
   {
-    title: "Restaurant Delays",
-    description: "Bridge the gap between ordering and eating without screen time.",
+    title: "Slow-Service Wiggles",
+    description: "Give them a tiny table task while the fries take their sweet time.",
     color: "bg-[#EDD97A]",
     textColor: "text-[#1A1A1A]",
     svg: (
@@ -90,7 +90,7 @@ export function UseCasesSection() {
   }
 
   return (
-    <section ref={ref} id="use-cases" className="py-16 sm:py-24 bg-white relative overflow-hidden" aria-labelledby="use-cases-heading">
+    <section ref={ref} id="use-cases" className="py-16 sm:py-24 bg-white relative overflow-hidden scroll-mt-24" aria-labelledby="use-cases-heading">
       {/* Torn tape edge at top */}
       <div className="absolute top-0 left-0 right-0 h-3 bg-[#1A1A1A] torn-edge-bottom" aria-hidden="true" />
       
@@ -118,11 +118,11 @@ export function UseCasesSection() {
           className="mb-10 sm:mb-16 max-w-3xl"
         >
           <span className="inline-block bg-[#C4A8D4]/20 text-[#1A1A1A] px-4 py-1.5 rounded-full text-xs font-mono tracking-widest mb-4 uppercase">
-            Use Cases
+            Play Spots
           </span>
           <h2 id="use-cases-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#1A1A1A] tracking-tight leading-[0.95] text-balance">
-            For The Moments They Need
-            <span className="text-[#E8735A]"> Something To Do</span>
+            For Little Waits That Need
+            <span className="text-[#E8735A]"> Tiny Tasks</span>
           </h2>
         </motion.div>
 
@@ -133,7 +133,7 @@ export function UseCasesSection() {
           animate={isInView ? "visible" : "hidden"}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
           role="list"
-          aria-label="Use cases"
+          aria-label="Play spots"
         >
           {useCases.map((useCase) => (
             <motion.article

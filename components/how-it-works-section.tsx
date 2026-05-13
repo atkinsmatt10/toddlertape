@@ -1,100 +1,17 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import type { Variants } from "framer-motion"
+import { motion, useInView, useReducedMotion } from "framer-motion"
 import { useRef } from "react"
 
-const steps = [
-  {
-    verb: "Tear",
-    description: "Pull a strip and let them rip.",
-    bg: "bg-coral",
-    text: "text-white",
-    number: "01",
-    accent: "border-coral",
-    svgColor: "#E8735A",
-  },
-  {
-    verb: "Taste",
-    description: "A light flavor moment without sticky residue.",
-    bg: "bg-sunshine",
-    text: "text-charcoal",
-    number: "02",
-    accent: "border-sunshine",
-    svgColor: "#EDD97A",
-  },
-  {
-    verb: "Dissolve",
-    description: "Designed to dissolve quickly in the mouth.",
-    bg: "bg-teal",
-    text: "text-white",
-    number: "03",
-    accent: "border-teal",
-    svgColor: "#5BBFB5",
-  },
-  {
-    verb: "Reset",
-    description: "Another strip, another tiny task.",
-    bg: "bg-lavender",
-    text: "text-charcoal",
-    number: "04",
-    accent: "border-lavender",
-    svgColor: "#C4A8D4",
-  },
-]
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-}
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 90, damping: 18 },
-  },
-}
-
-function TapeStripSVG({ color }: { color: string }) {
-  return (
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* Tape roll body */}
-      <circle cx="32" cy="32" r="26" fill={color} fillOpacity="0.2" stroke={color} strokeWidth="2.5" />
-      <circle cx="32" cy="32" r="16" fill={color} fillOpacity="0.35" stroke={color} strokeWidth="2" />
-      <circle cx="32" cy="32" r="7" fill={color} stroke={color} strokeWidth="2" />
-      {/* Torn tab */}
-      <path
-        d="M54 26 Q60 22 58 18 Q56 14 50 16 L46 24 Z"
-        fill={color}
-        fillOpacity="0.7"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      {/* Zigzag tear edge */}
-      <polyline
-        points="46,24 48,20 50,24 52,20 54,24 56,20"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  )
-}
+const youtubeVideoId = "HR1WgevBc6Q"
 
 export function HowItWorksSection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section id="how-it-works" ref={ref} className="py-28 bg-charcoal relative overflow-hidden">
+    <section id="how-it-works" ref={ref} className="py-28 bg-charcoal relative overflow-hidden scroll-mt-24">
       {/* Subtle dot-grid texture */}
       <div
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
@@ -134,9 +51,9 @@ export function HowItWorksSection() {
             How It Works
           </span>
           <h2 className="text-5xl md:text-7xl font-black text-cream tracking-tight leading-[0.9]">
-            Pick Their{" "}
+            Rip It.{" "}
             <span className="relative inline-block text-coral">
-              Favorite Rip
+              Taste It.
               {/* Underline scribble */}
               <svg
                 className="absolute -bottom-2 left-0 w-full"
@@ -161,60 +78,26 @@ export function HowItWorksSection() {
           </h2>
         </motion.div>
 
-        {/* Step cards */}
+        {/* YouTube video */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 36 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ type: "spring", stiffness: 90, damping: 20 }}
+          className="mx-auto max-w-5xl"
         >
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.verb}
-              variants={cardVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className={`relative rounded-3xl p-8 border-2 ${step.accent} bg-cream/5 overflow-hidden group cursor-default`}
-            >
-              {/* Large step number watermark */}
-              <span className="absolute top-4 right-5 text-7xl font-black text-cream/[0.04] select-none leading-none">
-                {step.number}
-              </span>
-
-              {/* Icon */}
-              <motion.div
-                className="mb-6"
-                whileHover={{ rotate: [0, -8, 8, 0] }}
-                transition={{ duration: 0.5 }}
-              >
-                <TapeStripSVG color={
-                  step.verb === "Tear" ? "#E8735A"
-                  : step.verb === "Taste" ? "#EDD97A"
-                  : step.verb === "Dissolve" ? "#5BBFB5"
-                  : "#C4A8D4"
-                } />
-              </motion.div>
-
-              {/* Verb pill */}
-              <motion.div
-                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${step.bg} mb-4`}
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className={`text-sm font-black tracking-wide ${step.text}`}>{step.verb}</span>
-              </motion.div>
-
-              <p className="text-cream/70 text-sm leading-relaxed text-pretty">{step.description}</p>
-
-              {/* Connector arrow — hidden on last card */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6" stroke="#FAF7F0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.25" />
-                  </svg>
-                </div>
-              )}
-            </motion.div>
-          ))}
+          <div
+            className="relative aspect-video overflow-hidden rounded-[2rem] border-2 border-cream/15 bg-black shadow-2xl shadow-black/30"
+          >
+            <iframe
+              className="absolute inset-0 h-full w-full"
+              src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?rel=0&modestbranding=1`}
+              title="Toddler Tape demo video"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
         </motion.div>
 
         {/* Disclaimer */}

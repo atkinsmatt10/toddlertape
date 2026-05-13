@@ -11,10 +11,6 @@ const footerLinks = [
     links: ["Rainbow Rips", "Dino Dots", "Berry Stripes", "Sunny Shapes", "Starter Pack"],
   },
   {
-    title: "Safety",
-    links: ["Ingredients", "Dissolve Science", "Age Guidance", "Certifications"],
-  },
-  {
     title: "FAQ",
     links: ["How it works", "Is it edible?", "Age range", "Where to buy", "Wholesale"],
   },
@@ -129,7 +125,7 @@ export function Footer() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 mb-10 sm:mb-14"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-14"
           aria-label="Footer navigation"
         >
           {footerLinks.map((section) => (

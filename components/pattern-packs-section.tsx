@@ -9,6 +9,25 @@ import { CheckoutModal, useCheckout } from "@/components/checkout"
 // Filter to just the pattern packs (not starter pack)
 const patternPacks = PRODUCTS.filter(p => p.id !== 'starter-pack')
 
+const productPhotos: Partial<Record<string, { src: string; alt: string }>> = {
+  "rainbow-rips": {
+    src: "/images/rainbow-rips-product-transparent.png",
+    alt: "Rainbow Rips tape roll",
+  },
+  "dino-dots": {
+    src: "/images/dino-dots-product-transparent.png",
+    alt: "Dino Dots tape roll",
+  },
+  "berry-stripes": {
+    src: "/images/berry-stripes-product-transparent-v2.png",
+    alt: "Berry Stripes tape roll",
+  },
+  "sunny-shapes": {
+    src: "/images/sunny-shapes-product-transparent.png",
+    alt: "Sunny Shapes tape roll",
+  },
+}
+
 // Tape Roll SVG Component
 function TapeRollVisual({ colors, pattern, isHovered }: { colors: string[]; pattern: string; isHovered: boolean }) {
   const prefersReducedMotion = useReducedMotion()
@@ -24,7 +43,7 @@ function TapeRollVisual({ colors, pattern, isHovered }: { colors: string[]; patt
           fill="none"
           stroke={colors[0]}
           strokeWidth="30"
-          className="transition-all duration-300"
+          className="transition-[stroke,stroke-width] duration-200 ease-out"
         />
         {/* Color rings */}
         {colors.slice(1, 5).map((color, i) => (
@@ -101,6 +120,27 @@ function TapeRollVisual({ colors, pattern, isHovered }: { colors: string[]; patt
   )
 }
 
+function ProductPhotoVisual({ src, alt, isHovered }: { src: string; alt: string; isHovered: boolean }) {
+  const prefersReducedMotion = useReducedMotion()
+
+  return (
+    <div className="relative w-full aspect-square flex items-center justify-center">
+      <motion.img
+        src={src}
+        alt={alt}
+        draggable={false}
+        className="w-[118%] max-w-none h-auto select-none drop-shadow-[0_18px_22px_rgba(26,26,26,0.16)]"
+        animate={prefersReducedMotion ? {} : {
+          y: isHovered ? -6 : 0,
+          scale: isHovered ? 1.05 : 1,
+          rotate: isHovered ? -2 : 0,
+        }}
+        transition={{ type: "spring", stiffness: 220, damping: 22 }}
+      />
+    </div>
+  )
+}
+
 // Pattern Swatches Component
 function PatternSwatches({ colors, isHovered }: { colors: string[]; isHovered: boolean }) {
   const prefersReducedMotion = useReducedMotion()
@@ -143,6 +183,7 @@ function ProductCard({
   onAddToCart: (id: string) => void
 }) {
   const prefersReducedMotion = useReducedMotion()
+  const productPhoto = productPhotos[product.id]
 
   return (
     <motion.div
@@ -175,11 +216,19 @@ function ProductCard({
 
         {/* Product Visual */}
         <div className="mb-4">
-          <TapeRollVisual
-            colors={product.colors}
-            pattern={product.pattern}
-            isHovered={isHovered}
-          />
+          {productPhoto ? (
+            <ProductPhotoVisual
+              src={productPhoto.src}
+              alt={productPhoto.alt}
+              isHovered={isHovered}
+            />
+          ) : (
+            <TapeRollVisual
+              colors={product.colors}
+              pattern={product.pattern}
+              isHovered={isHovered}
+            />
+          )}
         </div>
 
         {/* Pattern Swatches */}
@@ -254,7 +303,7 @@ export function PatternPacksSection() {
   }
 
   return (
-    <section id="packs" ref={ref} className="py-16 sm:py-24 bg-[#FFFBF5] relative overflow-hidden">
+    <section id="packs" ref={ref} className="py-16 sm:py-24 bg-[#FFFBF5] relative overflow-hidden scroll-mt-24">
       {/* Decorative tape strips */}
       <div className="absolute top-16 left-8 w-32 h-4 bg-[#4ECDC4]/20 rounded-sm rotate-12 hidden sm:block" />
       <div className="absolute top-32 right-12 w-24 h-3 bg-[#E8735A]/20 rounded-sm -rotate-6 hidden sm:block" />
@@ -274,7 +323,7 @@ export function PatternPacksSection() {
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-[#1A1A1A] tracking-tight leading-[0.95] text-balance">
             Pick Their Favorite
-            <span className="text-[#E8735A]"> Rip</span>
+            <span className="text-[#E8735A]"> Tape</span>
           </h2>
           <p className="mt-4 text-[#1A1A1A]/60 max-w-xl mx-auto text-base sm:text-lg">
             Each pack includes 6 rolls of colorful, dissolvable tape in themed patterns.
@@ -317,7 +366,7 @@ export function PatternPacksSection() {
               },
             }}
           >
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {getVisiblePacks().map((pack, index) => (
                 <ProductCard
                   key={`${pack.id}-${currentIndex}-${index}`}
@@ -337,7 +386,7 @@ export function PatternPacksSection() {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8735A] focus-visible:ring-offset-2 ${
+                className={`w-2.5 h-2.5 rounded-full transition-[width,background-color] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8735A] focus-visible:ring-offset-2 ${
                   index === currentIndex
                     ? "bg-[#E8735A] w-8"
                     : "bg-[#1A1A1A]/20 hover:bg-[#1A1A1A]/40"
@@ -348,25 +397,6 @@ export function PatternPacksSection() {
           </div>
         </div>
 
-        {/* View All Button */}
-        <motion.div
-          initial={prefersReducedMotion ? {} : { opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-          className="text-center mt-10 sm:mt-12"
-        >
-          <motion.button
-            className="border-2 border-[#1A1A1A] text-[#1A1A1A] px-6 sm:px-8 py-3 rounded-full font-bold text-sm tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8735A] focus-visible:ring-offset-2"
-            whileHover={prefersReducedMotion ? {} : { 
-              scale: 1.02, 
-              backgroundColor: "#1A1A1A", 
-              color: "#FFFBF5" 
-            }}
-            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-          >
-            View All Patterns
-          </motion.button>
-        </motion.div>
       </div>
 
       {/* Checkout Modal */}

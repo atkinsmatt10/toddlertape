@@ -39,9 +39,9 @@ export function Navigation() {
   }
 
   const navLinks = [
-    { label: "How It Works", href: "#how-it-works" },
     { label: "Patterns", href: "#packs" },
-    { label: "Safety", href: "#safety" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Play Spots", href: "#use-cases" },
     { label: "Reviews", href: "#reviews" },
   ]
 
@@ -55,7 +55,7 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={prefersReducedMotion ? { duration: 0.01 } : { type: "spring", stiffness: 100, damping: 20 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-out ${
           scrolled
             ? "bg-[#FFFBF5]/95 backdrop-blur-md border-b border-[#1A1A1A]/10 shadow-sm"
             : "bg-transparent"
@@ -74,8 +74,6 @@ export function Navigation() {
               {/* Tape roll icon */}
               <motion.div
                 className="w-7 h-7 rounded-full border-[3px] border-[#1A1A1A] flex items-center justify-center bg-[#E8735A]"
-                animate={prefersReducedMotion ? {} : { rotate: [0, 6, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FFFBF5]" />
               </motion.div>
@@ -119,13 +117,6 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            {!prefersReducedMotion && (
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full"
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 4 }}
-              />
-            )}
             <span className="relative z-10">Shop Starter Pack</span>
           </motion.button>
 
@@ -133,7 +124,7 @@ export function Navigation() {
           <motion.button
             className="md:hidden p-2 text-[#1A1A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8735A] rounded-lg"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -193,6 +184,7 @@ export function Navigation() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                   whileHover={prefersReducedMotion ? {} : { backgroundColor: "#E8735A" }}
+                  whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
                 >
                   Shop Starter Pack
                 </motion.button>

@@ -19,13 +19,13 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Toddler Tape | The Tape Toddlers Can Rip",
-  description: "A satisfying sensory strip designed to tear, dissolve quickly, and keep tiny hands busy. Starter packs coming soon.",
+  title: "Toddler Tape | The Tape Toddlers Can Eat",
+  description: "A satisfying sensory strip designed to tear, taste, dissolve quickly, and keep tiny hands busy. Starter packs coming soon.",
   keywords: ["toddler tape", "sensory play", "toddler activity", "dissolvable tape", "fine motor skills"],
   generator: "v0.app",
   openGraph: {
-    title: "Toddler Tape | The Tape Toddlers Can Rip",
-    description: "A satisfying sensory strip designed to tear, dissolve quickly, and keep tiny hands busy.",
+    title: "Toddler Tape | The Tape Toddlers Can Eat",
+    description: "A satisfying sensory strip designed to tear, taste, dissolve quickly, and keep tiny hands busy.",
     type: "website",
   },
 }

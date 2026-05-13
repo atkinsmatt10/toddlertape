@@ -51,8 +51,6 @@ export function LaunchCTASection() {
           {/* Eyebrow */}
           <motion.div
             className="inline-flex items-center gap-2 bg-white/10 text-[#FFFBF5]/70 px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-mono tracking-widest mb-6 sm:mb-8 uppercase"
-            animate={prefersReducedMotion ? {} : { scale: [1, 1.02, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#E8735A] inline-block" aria-hidden="true" />
             Launching Soon
@@ -60,13 +58,11 @@ export function LaunchCTASection() {
 
           {/* Heading */}
           <h2 id="launch-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#FFFBF5] tracking-tight leading-[0.9] mb-4 sm:mb-6 text-balance">
-            Ready For A{" "}
+            Ready For Tape{" "}
             <motion.span
               className="text-[#E8735A] inline-block"
-              animate={prefersReducedMotion ? {} : { rotate: [0, -1, 1, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
             >
-              Better Rip?
+              They Can Taste?
             </motion.span>
           </h2>
 
@@ -127,8 +123,8 @@ export function LaunchCTASection() {
             >
               <motion.div
                 className="w-12 h-12 sm:w-14 sm:h-14 bg-[#E8735A] rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center"
-                initial={prefersReducedMotion ? {} : { scale: 0 }}
-                animate={{ scale: 1 }}
+                initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", delay: 0.1 }}
               >
                 <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -167,12 +163,12 @@ export function LaunchCTASection() {
           {[
             { value: "4,800+", label: "On Waitlist" },
             { value: "4.9 / 5", label: "Beta Rating" },
-            { value: "100%", label: "Food-Grade" },
+            { value: "~30 sec", label: "Dissolve Target" },
           ].map((stat) => (
             <div key={stat.label} role="listitem">
               <motion.div
                 className="text-xl sm:text-2xl md:text-3xl font-black text-[#E8735A]"
-                initial={prefersReducedMotion ? {} : { scale: 0.7, opacity: 0 }}
+                initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.92 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 200 }}

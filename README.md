@@ -12,6 +12,25 @@ This repository is linked to a [v0](https://v0.app) project. You can continue de
 
 ## Getting Started
 
+Create a local `.env.local` with the Stripe keys before testing checkout:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+On Vercel, set the same variables for the project. `NEXT_PUBLIC_APP_URL` should
+be the production site URL; Vercel's `VERCEL_URL` is used as a fallback for
+preview deployments.
+
+The checked-in product catalog uses live Stripe Price IDs. Use live Stripe keys
+with those prices, or create matching test-mode products/prices before testing
+Checkout with `sk_test_...` and `pk_test_...`.
+
+Restart the dev server after adding or changing `.env.local`; Next.js bundles
+`NEXT_PUBLIC_` variables when the server starts.
+
 First, run the development server:
 
 ```bash

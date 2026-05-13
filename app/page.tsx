@@ -2,7 +2,6 @@ import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { PatternPacksSection } from "@/components/pattern-packs-section"
 import { HowItWorksSection } from "@/components/how-it-works-section"
-import { SafetySection } from "@/components/safety-section"
 import { UseCasesSection } from "@/components/use-cases-section"
 import { ReviewsSection } from "@/components/reviews-section"
 import { LaunchCTASection } from "@/components/launch-cta-section"
@@ -15,7 +14,6 @@ export default function Home() {
       <HeroSection />
       <PatternPacksSection />
       <HowItWorksSection />
-      <SafetySection />
       <UseCasesSection />
       <ReviewsSection />
       <LaunchCTASection />

@@ -6,6 +6,8 @@ export interface Product {
   colors: string[]
   pattern: string
   accentColor: string
+  stripeProductId?: string
+  stripePriceId?: string
   popular?: boolean
 }
 
@@ -21,6 +23,8 @@ export const PRODUCTS: Product[] = [
     colors: ['#E8735A', '#F7DC6F', '#77DD77', '#4ECDC4', '#B19CD9', '#FF9AA2'],
     pattern: 'stripes',
     accentColor: '#E8735A',
+    stripeProductId: 'prod_UVjgoMzx8p8uoJ',
+    stripePriceId: 'price_1TWiDjCJiZso1VqN36vE0shs',
     popular: true,
   },
   {
@@ -31,6 +35,8 @@ export const PRODUCTS: Product[] = [
     colors: ['#556B2F', '#8FBC8F', '#D2691E', '#DEB887', '#6B8E23', '#F4A460'],
     pattern: 'dots',
     accentColor: '#6B8E23',
+    stripeProductId: 'prod_UVjhax2MXw4apd',
+    stripePriceId: 'price_1TWiDxCJiZso1VqNwIft3Axo',
   },
   {
     id: 'berry-stripes',
@@ -40,6 +46,8 @@ export const PRODUCTS: Product[] = [
     colors: ['#C71585', '#DB7093', '#FFB6C1', '#8B008B', '#DA70D6', '#FF69B4'],
     pattern: 'stripes',
     accentColor: '#C71585',
+    stripeProductId: 'prod_UVjhOaxpUSixQK',
+    stripePriceId: 'price_1TWiEDCJiZso1VqN1wWC4t60',
   },
   {
     id: 'sunny-shapes',
@@ -49,6 +57,8 @@ export const PRODUCTS: Product[] = [
     colors: ['#FFD700', '#FFA500', '#FF8C00', '#FFEC8B', '#F0E68C', '#FFE4B5'],
     pattern: 'shapes',
     accentColor: '#FFA500',
+    stripeProductId: 'prod_UVjhJPHRDhd8ad',
+    stripePriceId: 'price_1TWiEUCJiZso1VqNZMeUUbGL',
   },
   {
     id: 'starter-pack',
@@ -58,6 +68,8 @@ export const PRODUCTS: Product[] = [
     colors: ['#E8735A', '#6B8E23', '#C71585', '#FFA500', '#4ECDC4', '#B19CD9'],
     pattern: 'mixed',
     accentColor: '#E8735A',
+    stripeProductId: 'prod_UVjiJl59KQjFR3',
+    stripePriceId: 'price_1TWiEiCJiZso1VqNaNvsHgrk',
     popular: true,
   },
 ]
@@ -67,5 +79,6 @@ export function getProductById(id: string): Product | undefined {
 }
 
 export function formatPrice(priceInCents: number): string {
-  return `$${(priceInCents / 100).toFixed(0)}`
+  const dollars = priceInCents / 100
+  return `$${dollars.toFixed(2).replace(/\.00$/, '')}`
 }
