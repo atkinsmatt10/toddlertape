@@ -40,12 +40,20 @@ export function CheckoutModal({ productId, isOpen, onClose }: CheckoutModalProps
   const [stripePromise] = useState(() => getStripePromise())
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [checkoutComplete, setCheckoutComplete] = useState(false)
+  const handleCheckoutComplete = useCallback(() => setCheckoutComplete(true), [])
   
   const fetchClientSecret = useCallback(async () => {
     setCheckoutError(null)
 
     try {
-      return await startCheckoutSession(productId)
+      const result = await startCheckoutSession(productId)
+
+      if ('error' in result) {
+        setCheckoutError(result.error)
+        throw new Error(result.error)
+      }
+
+      return result.clientSecret
     } catch (error) {
       console.error('[checkout] Failed to create Stripe Checkout Session', error)
       setCheckoutError(
@@ -143,7 +151,7 @@ export function CheckoutModal({ productId, isOpen, onClose }: CheckoutModalProps
                   stripe={stripePromise}
                   options={{
                     fetchClientSecret,
-                    onComplete: () => setCheckoutComplete(true),
+                    onComplete: handleCheckoutComplete,
                   }}
                 >
                   <EmbeddedCheckout />

@@ -24,9 +24,10 @@ On Vercel, set the same variables for the project. `NEXT_PUBLIC_APP_URL` should
 be the production site URL; Vercel's `VERCEL_URL` is used as a fallback for
 preview deployments.
 
-The checked-in product catalog uses live Stripe Price IDs. Use live Stripe keys
-with those prices, or create matching test-mode products/prices before testing
-Checkout with `sk_test_...` and `pk_test_...`.
+Checkout builds Stripe line items from the checked-in product catalog using
+`price_data`, so the configured Stripe key mode controls whether sessions are
+test or live. Use live `sk_live_...` and `pk_live_...` keys before accepting real
+payments.
 
 Restart the dev server after adding or changing `.env.local`; Next.js bundles
 `NEXT_PUBLIC_` variables when the server starts.

@@ -8,19 +8,26 @@ type CheckoutItem = {
   quantity: number
 }
 
-function getAppUrl() {
-  if (process.env.NEXT_PUBLIC_APP_URL) {
-    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')
-  }
+type CheckoutSessionResult =
+  | { clientSecret: string }
+  | { error: string }
 
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`.replace(/\/$/, '')
+interface CheckoutLineItem {
+  price_data: {
+    currency: 'usd'
+    product_data: {
+      name: string
+      description: string
+      metadata: {
+        product_id: string
+      }
+    }
+    unit_amount: number
   }
-
-  return 'http://localhost:3000'
+  quantity: number
 }
 
-function buildLineItem(item: CheckoutItem) {
+function buildLineItem(item: CheckoutItem): CheckoutLineItem {
   const product = PRODUCTS.find((p) => p.id === item.productId)
   if (!product) {
     throw new Error(`Product with id "${item.productId}" not found`)
@@ -30,19 +37,15 @@ function buildLineItem(item: CheckoutItem) {
     throw new Error(`Invalid quantity for "${product.name}"`)
   }
 
-  if (product.stripePriceId) {
-    return {
-      price: product.stripePriceId,
-      quantity: item.quantity,
-    }
-  }
-
   return {
     price_data: {
       currency: 'usd',
       product_data: {
         name: product.name,
         description: product.description,
+        metadata: {
+          product_id: product.id,
+        },
       },
       unit_amount: product.priceInCents,
     },
@@ -59,20 +62,28 @@ function getCheckoutErrorMessage(error: unknown) {
     return 'Stripe checkout is not configured. Add STRIPE_SECRET_KEY to .env.local, then restart the dev server.'
   }
 
-  if (error.message.includes('No such price')) {
-    return 'Stripe Price IDs are not available for the configured Stripe account or mode. Use keys from the account that owns these prices, or update the catalog with matching Price IDs.'
+  if (
+    error.message === 'Checkout requires at least one product' ||
+    error.message.startsWith('Product with id') ||
+    error.message.startsWith('Invalid quantity')
+  ) {
+    return error.message
   }
 
-  return error.message
+  return 'Checkout is temporarily unavailable. Please try again.'
 }
 
-export async function startCheckoutSession(productId: string) {
+export async function startCheckoutSession(productId: string): Promise<CheckoutSessionResult> {
   return startMultiProductCheckoutSession([{ productId, quantity: 1 }])
 }
 
-export async function startMultiProductCheckoutSession(items: CheckoutItem[]) {
+export async function startMultiProductCheckoutSession(
+  items: CheckoutItem[],
+): Promise<CheckoutSessionResult> {
   if (!items.length) {
-    throw new Error('Checkout requires at least one product')
+    return {
+      error: getCheckoutErrorMessage(new Error('Checkout requires at least one product')),
+    }
   }
 
   try {
@@ -84,7 +95,6 @@ export async function startMultiProductCheckoutSession(items: CheckoutItem[]) {
       redirect_on_completion: 'never',
       line_items: lineItems,
       mode: 'payment',
-      return_url: `${getAppUrl()}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
       shipping_address_collection: {
         allowed_countries: ['US'],
       },
@@ -96,9 +106,9 @@ export async function startMultiProductCheckoutSession(items: CheckoutItem[]) {
     if (!session.client_secret) {
       throw new Error('Failed to create checkout session - no client secret returned')
     }
-    return session.client_secret
+    return { clientSecret: session.client_secret }
   } catch (error) {
     console.error('[checkout] Stripe Checkout Session creation failed', error)
-    throw new Error(getCheckoutErrorMessage(error))
+    return { error: getCheckoutErrorMessage(error) }
   }
 }
