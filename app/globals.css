@@ -1,0 +1,382 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(0.98 0.01 90);
+  --foreground: oklch(0.2 0.02 285);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.02 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 285);
+  --primary: oklch(0.2 0.02 285);
+  --primary-foreground: oklch(0.98 0.01 90);
+  --secondary: oklch(0.96 0.01 90);
+  --secondary-foreground: oklch(0.2 0.02 285);
+  --muted: oklch(0.96 0.01 90);
+  --muted-foreground: oklch(0.5 0.02 285);
+  --accent: oklch(0.7 0.18 25);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.01 90);
+  --input: oklch(0.9 0.01 90);
+  --ring: oklch(0.7 0.18 25);
+  --chart-1: oklch(0.7 0.18 25);
+  --chart-2: oklch(0.75 0.15 185);
+  --chart-3: oklch(0.85 0.15 95);
+  --chart-4: oklch(0.75 0.12 300);
+  --chart-5: oklch(0.8 0.14 155);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.98 0.01 90);
+  --sidebar-foreground: oklch(0.2 0.02 285);
+  --sidebar-primary: oklch(0.2 0.02 285);
+  --sidebar-primary-foreground: oklch(0.98 0.01 90);
+  --sidebar-accent: oklch(0.96 0.01 90);
+  --sidebar-accent-foreground: oklch(0.2 0.02 285);
+  --sidebar-border: oklch(0.9 0.01 90);
+  --sidebar-ring: oklch(0.7 0.18 25);
+
+  /* Toddler Tape brand colors */
+  --cream: #FFFBF5;
+  --charcoal: #1A1A1A;
+  --coral: #E8735A;
+  --teal: #5BBFB5;
+  --sunshine: #EDD97A;
+  --lavender: #C4A8D4;
+  --mint: #7ECFB3;
+}
+
+.dark {
+  --background: oklch(0.2 0.02 285);
+  --foreground: oklch(0.98 0.01 90);
+  --card: oklch(0.25 0.02 285);
+  --card-foreground: oklch(0.98 0.01 90);
+  --popover: oklch(0.25 0.02 285);
+  --popover-foreground: oklch(0.98 0.01 90);
+  --primary: oklch(0.98 0.01 90);
+  --primary-foreground: oklch(0.2 0.02 285);
+  --secondary: oklch(0.3 0.02 285);
+  --secondary-foreground: oklch(0.98 0.01 90);
+  --muted: oklch(0.3 0.02 285);
+  --muted-foreground: oklch(0.7 0.02 285);
+  --accent: oklch(0.7 0.18 25);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.3 0.02 285);
+  --input: oklch(0.3 0.02 285);
+  --ring: oklch(0.7 0.18 25);
+  --chart-1: oklch(0.7 0.18 25);
+  --chart-2: oklch(0.75 0.15 185);
+  --chart-3: oklch(0.85 0.15 95);
+  --chart-4: oklch(0.75 0.12 300);
+  --chart-5: oklch(0.8 0.14 155);
+  --sidebar: oklch(0.25 0.02 285);
+  --sidebar-foreground: oklch(0.98 0.01 90);
+  --sidebar-primary: oklch(0.7 0.18 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 90);
+  --sidebar-accent: oklch(0.3 0.02 285);
+  --sidebar-accent-foreground: oklch(0.98 0.01 90);
+  --sidebar-border: oklch(0.3 0.02 285);
+  --sidebar-ring: oklch(0.7 0.18 25);
+}
+
+@theme inline {
+  --font-sans: "Nunito", "Nunito Fallback", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Toddler Tape theme colors */
+  --color-cream: var(--cream);
+  --color-charcoal: var(--charcoal);
+  --color-coral: var(--coral);
+  --color-teal: var(--teal);
+  --color-sunshine: var(--sunshine);
+  --color-lavender: var(--lavender);
+  --color-mint: var(--mint);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations for Toddler Tape */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slide-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tape-unroll {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-bob {
+  animation: bob 3s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-slide-horizontal {
+  animation: slide-horizontal 25s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--coral);
+  color: white;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+/* Button press effect */
+.btn-press {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-float-gentle,
+  .animate-bob,
+  .animate-wiggle,
+  .animate-pulse-soft,
+  .animate-slide-horizontal,
+  .animate-spin-slow,
+  .animate-shimmer {
+    animation: none !important;
+  }
+}
+
+/* Torn tape edge SVG pattern */
+.torn-edge-top {
+  clip-path: polygon(
+    0% 8px,
+    4% 0%,
+    8% 8px,
+    12% 2px,
+    16% 6px,
+    20% 0%,
+    24% 8px,
+    28% 4px,
+    32% 8px,
+    36% 0%,
+    40% 6px,
+    44% 2px,
+    48% 8px,
+    52% 0%,
+    56% 6px,
+    60% 4px,
+    64% 8px,
+    68% 0%,
+    72% 8px,
+    76% 2px,
+    80% 6px,
+    84% 0%,
+    88% 8px,
+    92% 4px,
+    96% 8px,
+    100% 0%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+.torn-edge-bottom {
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% calc(100% - 8px),
+    96% 100%,
+    92% calc(100% - 8px),
+    88% calc(100% - 4px),
+    84% 100%,
+    80% calc(100% - 6px),
+    76% calc(100% - 2px),
+    72% 100%,
+    68% calc(100% - 8px),
+    64% calc(100% - 4px),
+    60% 100%,
+    56% calc(100% - 6px),
+    52% calc(100% - 2px),
+    48% 100%,
+    44% calc(100% - 8px),
+    40% calc(100% - 6px),
+    36% 100%,
+    32% calc(100% - 4px),
+    28% calc(100% - 8px),
+    24% 100%,
+    20% calc(100% - 6px),
+    16% calc(100% - 2px),
+    12% 100%,
+    8% calc(100% - 8px),
+    4% calc(100% - 4px),
+    0% 100%
+  );
+}
+
+/* Perforated tape divider */
+.perforated-divider {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    currentColor 8px,
+    currentColor 16px
+  );
+  height: 2px;
+  opacity: 0.2;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
